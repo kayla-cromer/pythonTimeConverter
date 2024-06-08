@@ -1,0 +1,55 @@
+from datetime import datetime
+
+import pytz
+
+
+def convert_time_zone(from_zone, to_zone):
+    try:
+        from_zone = pytz.timezone(from_zone)
+        to_zone = pytz.timezone(to_zone)
+
+        # get current time in from_zone
+        from_time = datetime.now(from_zone)
+
+        # convert to to_zone
+        to_time = from_time.astimezone(to_zone)
+
+        return from_time, to_time, None
+    except Exception as e:
+        return None, None, str(e)
+
+
+def main():
+    while True:
+        print("\nTime Zone Converter Menu:")
+        print("1. Convert time zone")
+        print("2. Exit")
+
+        choice = input("Choose an option (1-2):")
+
+        if choice == "1":
+            from_zone = input("Enter the from time zone (i.e. 'US/Eastern'): ")
+            to_zone = input("Enter the to time zone (i.e., 'Europe/London'): ")
+
+            from_time, to_time, error = convert_time_zone(from_zone, to_zone)
+
+            if from_time and to_time:
+                print(
+                    f"Current time in {from_zone}: {from_time.strftime('%Y-%m-%d %H:%M:%S')}"
+                )
+
+                print(
+                    f"Converted time in {to_zone}: {to_time.strftime('%Y-%m-%d %H:%M:%S')}"
+                )
+
+            else:
+                print(f"Error {error}")
+        elif choice == "2":
+            print("Exiting...")
+            break
+        else:
+            print("Invalid choice. Please try again.")
+
+
+if __name__ == "__main__":
+    main()
